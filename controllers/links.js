@@ -18,7 +18,7 @@ router.post('/', function(req, res){
   newLink.hash = hash;
 
   newLink.save().then(function(y){
-    res.render('links/show', {hash: req.headers.host + "/" + hash});
+    res.render('links/show', {hash: "http://" + req.headers.host + "/" + hash});
     });
   });
 });
@@ -27,7 +27,7 @@ router.get('/:id', function(req, res){
   var id = req.params.id;
 
   db.link.find({where: {hash: id}}).then(function(link) {
-  res.redirect('http://' + link.dataValues.url)
+  res.redirect(link.dataValues.url)
   });
 });
 
