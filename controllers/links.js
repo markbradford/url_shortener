@@ -9,16 +9,15 @@ var hashids = new Hashids('this is my jam');
 
 router.use(bodyParser.urlencoded({extended:false}));
 
-
 router.post('/', function(req, res){
   var query = req.body.q;
 
   db.link.create({ url: query }).then(function(newLink){
-  var hash = hashids.encode(newLink.id);
-  newLink.hash = hash;
+  var hashId = hashids.encode(newLink.id);
+  newLink.hash = hashId;
 
   newLink.save().then(function(y){
-    res.render('links/show', {hash: "http://" + req.headers.host + "/" + hash});
+    res.render('links/show', {hash: hashId});
     });
   });
 });
@@ -27,7 +26,7 @@ router.get('/:id', function(req, res){
   var id = req.params.id;
 
   db.link.find({where: {hash: id}}).then(function(link) {
-  res.redirect(link.dataValues.url)
+  res.redirect('http://' + link.dataValues.url)
   });
 });
 
