@@ -6,6 +6,7 @@ var db = require('../models');
 var bodyParser = require('body-parser');
 var hashids = new Hashids('this is my jam');
 
+
 router.use(bodyParser.urlencoded({extended:false}));
 
 
@@ -17,7 +18,7 @@ router.post('/', function(req, res){
   newLink.hash = hash;
 
   newLink.save().then(function(y){
-    res.render('links/show', {hash: hash});
+    res.render('links/show', {hash: req.headers.host + "/" + hash});
     });
   });
 });
